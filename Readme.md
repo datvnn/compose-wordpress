@@ -1,8 +1,9 @@
 
-## Docker compose: Wordpress - Php7.4-apache - ioncube - Redis
+## Docker compose: Wordpress - Php7.4-apache - ioncube - Mariadb -Redis
 
 **Note:** 
 - If you are not using `Nginx-proxy-manager`, enable the ports in the `docker-compose.yml` file.
+- If you want to use php8.1 and ioncube, check if the plugin supports iconcube on php8.1. Plugin runs with ioncube php7.4 but not sure to run with ioncube php8.1
 
 **services:**
  - Wordpress: php7.4-apache
@@ -16,15 +17,16 @@
 **Install:**
 ```
 cd /opt
-git clone 
+git clone https://github.com/datvnn/compose-wordpress-apache.git example.com
 cd example.com
 
 cp example.env .env
 ```
 Edit file `.env`
 
-Run:
-`docker compose up -d`
+Run: `docker compose up -d`
+
+Done: Visit example.com
 
 Options: Existing wp site migration
 - upload file database.sql to /opt
