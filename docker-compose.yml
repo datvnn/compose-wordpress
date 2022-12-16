@@ -1,0 +1,49 @@
+services:
+    db:
+      image: mariadb:10.6.4-focal
+      command: '--default-authentication-plugin=mysql_native_password'
+      volumes:
+        - ./db_data:/var/lib/mysql
+      networks:
+        - wordpress
+      restart: always
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - MYSQL_DATABASE=${WORDPRESS_DB_NAME}
+        - MYSQL_USER=${WORDPRESS_DB_USER}
+        - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      # expose:
+      #   - 3306
+      #   - 33060
+    wordpress:
+      build: 
+        context: .
+        args:
+          PHP_VER: ${PHP_VER}
+          PHPREDIS_VER: ${PHPREDIS_VER}
+      volumes:
+        - ./wp_data:/var/www/html
+      networks:
+        - wordpress
+        - default
+      # ports:
+      #   - 80:80
+      restart: always
+      environment:
+        - WORDPRESS_DB_HOST=db
+        - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+        - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+        - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+        - WORDPRESS_CONFIG_EXTRA=${WORDPRESS_CONFIG_EXTRA}
+    redis:
+      image: redis:${REDIS_VER}
+      restart: always
+      networks:
+        - wordpress
+networks:
+  default:
+    external: true
+    name: nginx-proxy-man
+  wordpress:
+    internal: true
+  
