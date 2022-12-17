@@ -6,6 +6,7 @@ services:
         - ./db_data:/var/lib/mysql
       networks:
         - wordpress
+        - pma_net
       restart: always
       environment:
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -43,6 +44,9 @@ networks:
   default:
     external: true
     name: nginx-proxy-man
+  pma_net:
+    external: true
+    name: pma-external
   wordpress:
     internal: true
   
