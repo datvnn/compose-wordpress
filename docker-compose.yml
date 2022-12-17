@@ -23,6 +23,7 @@ services:
           PHP_VER: ${PHP_VER}
       volumes:
         - ./wp_data:/var/www/html
+        - ./custom-limits.ini:/usr/local/etc/php/conf.d/custom-limits.ini
       networks:
         - wordpress
         - default

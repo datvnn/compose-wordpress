@@ -15,4 +15,3 @@ RUN set -ex \
     && echo "zend_extension = $php_ext_dir/ioncube_loader_lin_${PHP_VER}.so" \
         > /usr/local/etc/php/conf.d/00-ioncube.ini \
     && pecl install redis && docker-php-ext-enable redis
-
