@@ -41,6 +41,7 @@ Options: Existing wp site migration
 - upload file database.sql to /opt
 - Import data: `docker compose exec -T db mysql -u<WORDPRESS_DB_USER> -p<WORDPRESS_DB_PASSWORD> <WORDPRESS_DB_NAME> < /opt/sql`
 - Copy the old `wp-content` folder contents to `wp-data/wp-content/`
+- `chown -R www-data:www-data wp-data/wp-content/*`
 
 Connect Redis
 - install Plugin `Redis Object Cache`
