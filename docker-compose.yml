@@ -1,6 +1,6 @@
 services:
     db:
-      # container_name: ${COMPOSE_PROJECT_NAME}-db
+      container_name: ${COMPOSE_PROJECT_NAME}-db
       image: mariadb:10.6.4-focal
       command: '--default-authentication-plugin=mysql_native_password'
       volumes:
@@ -18,7 +18,7 @@ services:
       #   - 3306
       #   - 33060
     wordpress:
-      # container_name: ${COMPOSE_PROJECT_NAME}-wp
+      container_name: ${COMPOSE_PROJECT_NAME}-wp
       build: 
         context: .
         args:
@@ -29,7 +29,7 @@ services:
         - ./custom-limits.ini:/usr/local/etc/php/conf.d/custom-limits.ini
       networks:
         - wordpress
-        # - default
+        - default
       # ports:
       #   - 80:80
       restart: always
@@ -44,7 +44,7 @@ services:
         - db
         - redis
     nginx:
-        # container_name: ${COMPOSE_PROJECT_NAME}-nginx
+        container_name: ${COMPOSE_PROJECT_NAME}-nginx
         image: nginx:stable-alpine
         restart: unless-stopped
         networks:
@@ -60,7 +60,7 @@ services:
         - wordpress
 
     redis:
-      # container_name: ${COMPOSE_PROJECT_NAME}-redis
+      container_name: ${COMPOSE_PROJECT_NAME}-redis
       image: redis:${REDIS_VER}
       restart: always
       networks:
