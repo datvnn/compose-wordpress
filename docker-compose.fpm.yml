@@ -19,7 +19,7 @@ services:
     wordpress:
       build: 
         context: .
-        dockerfile: dockerfile.fpm
+        dockerfile: fpm/dockerfile
         args:
           PHP_VER: ${PHP_VER}
       volumes:
