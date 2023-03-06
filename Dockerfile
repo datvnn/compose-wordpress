@@ -1,5 +1,6 @@
 ARG PHP_VER
-FROM wordpress:php${PHP_VER}-apache
+ARG WP_TAG
+FROM wordpress:${WP_TAG}
 
 # Install ioncube + phpredis
 ARG PHP_VER

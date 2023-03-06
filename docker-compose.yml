@@ -21,6 +21,7 @@ services:
         context: .
         args:
           PHP_VER: ${PHP_VER}
+          WP_TAG: ${WP_TAG}
       volumes:
         - ./wp_data:/var/www/html
         - ./custom-limits.ini:/usr/local/etc/php/conf.d/custom-limits.ini
