@@ -95,8 +95,3 @@ Login phpmyadmin:
 - Server: name container of data wordpress
 - user: root
 - pass: MYSQL_ROOT_PASSWORD (dataserver wp)
-
-## FPM
-```
-docker compose -f docker-compose.fpm.yml up -d
-```
