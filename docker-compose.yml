@@ -1,5 +1,6 @@
 services:
     db:
+      container_name: ${COMPOSE_PROJECT_NAME}-db
       image: mariadb:10.6.4-focal
       command: '--default-authentication-plugin=mysql_native_password'
       volumes:
@@ -17,6 +18,7 @@ services:
       #   - 3306
       #   - 33060
     wordpress:
+      container_name: ${COMPOSE_PROJECT_NAME}-wp
       build: 
         context: .
         args:
@@ -53,6 +55,7 @@ services:
             - ./wp_data:/var/www/html
 
     redis:
+      container_name: ${COMPOSE_PROJECT_NAME}-redis
       image: redis:${REDIS_VER}
       restart: always
       networks:
