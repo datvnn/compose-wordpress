@@ -50,8 +50,8 @@ services:
         networks:
         - wordpress
         - default
-        ports:
-            - 85:80
+        # ports:
+        #     - 85:80
         #     - 443:443
         volumes:
             - ./nginx/conf:/etc/nginx/conf.d
