@@ -40,6 +40,9 @@ services:
         - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
         - WORDPRESS_CONFIG_EXTRA=${WORDPRESS_CONFIG_EXTRA}
       mem_limit: ${MEM_LIMIT}
+      depends_on:
+        - db
+        - redis
     nginx:
         container_name: ${COMPOSE_PROJECT_NAME}-nginx
         image: nginx:stable-alpine
@@ -53,6 +56,8 @@ services:
         volumes:
             - ./nginx/conf:/etc/nginx/conf.d
             - ./wp_data:/var/www/html
+        depends_on:
+        - wordpress
 
     redis:
       container_name: ${COMPOSE_PROJECT_NAME}-redis
