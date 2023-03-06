@@ -39,17 +39,18 @@ services:
         - WORDPRESS_CONFIG_EXTRA=${WORDPRESS_CONFIG_EXTRA}
       mem_limit: ${MEM_LIMIT}
     nginx:
-        container_name: nginx
+        container_name: ${COMPOSE_PROJECT_NAME}-nginx
         image: nginx:stable-alpine
         restart: unless-stopped
         networks:
         - wordpress
         - default
         # ports:
-        #     - 80:80
+        #     - 85:80
         #     - 443:443
         volumes:
             - ./nginx/conf:/etc/nginx/conf.d
+            - ./wp_data:/var/www/html
 
     redis:
       image: redis:${REDIS_VER}
