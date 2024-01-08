@@ -1,77 +1,88 @@
 services:
-    db:
-      container_name: ${COMPOSE_PROJECT_NAME}-db
-      image: mariadb:10.6.4-focal
-      command: '--default-authentication-plugin=mysql_native_password'
-      volumes:
-        - ./db_data:/var/lib/mysql
-      networks:
-        - wordpress
-        - pma_net
-      restart: always
-      environment:
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        - MYSQL_DATABASE=${WORDPRESS_DB_NAME}
-        - MYSQL_USER=${WORDPRESS_DB_USER}
-        - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
-      # expose:
-      #   - 3306
-      #   - 33060
+    # db:
+    #   container_name: ${COMPOSE_PROJECT_NAME}-db
+    #   image: mariadb:10.6.4-focal
+    #   command: '--default-authentication-plugin=mysql_native_password'
+    #   volumes:
+    #     - ./db_data:/var/lib/mysql
+    #   networks:
+    #     - wordpress
+    #     - pma_net
+    #   restart: always
+    #   environment:
+    #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    #     - MYSQL_DATABASE=${WORDPRESS_DB_NAME}
+    #     - MYSQL_USER=${WORDPRESS_DB_USER}
+    #     - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
+    #   # expose:
+    #   #   - 3306
+    #   #   - 33060
     wordpress:
       container_name: ${COMPOSE_PROJECT_NAME}-wp
-      build: 
-        context: .
-        args:
-          PHP_VER: ${PHP_VER}
-          WP_TAG: ${WP_TAG}
+      image: wordpress:latest
+      # build: 
+      #   context: .
+      #   args:
+      #     PHP_VER: ${PHP_VER}
+      #     WP_TAG: ${WP_TAG}
       volumes:
-        - ./wp_data:/var/www/html
+        - ./wp-content:/var/www/html/wp-content
         - ./custom-limits.ini:/usr/local/etc/php/conf.d/custom-limits.ini
       networks:
-        - wordpress
-        - default
+        # - wordpress
+        - nginx-proxy-man
+        - redis-network
+        - db-network
       # ports:
       #   - 80:80
       restart: always
       environment:
-        - WORDPRESS_DB_HOST=db
+        - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
         - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
         - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
         - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
         - WORDPRESS_CONFIG_EXTRA=${WORDPRESS_CONFIG_EXTRA}
       mem_limit: ${MEM_LIMIT}
-      depends_on:
-        - db
-        - redis
-    nginx:
-        container_name: ${COMPOSE_PROJECT_NAME}-nginx
-        image: nginx:stable-alpine
-        restart: unless-stopped
-        networks:
-        - wordpress
-        - default
-        # ports:
-        #     - 85:80
-        #     - 443:443
-        volumes:
-            - ./nginx/conf:/etc/nginx/conf.d
-            - ./wp_data:/var/www/html
-        depends_on:
-        - wordpress
+      # depends_on:
+      #   - ${WORDPRESS_DB_HOST}
+        # - redis
+    # nginx:
+    #     container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    #     image: nginx:stable-alpine
+    #     restart: unless-stopped
+    #     networks:
+    #     - wordpress
+    #     - default
+    #     # ports:
+    #     #     - 85:80
+    #     #     - 443:443
+    #     volumes:
+    #         - ./nginx/conf:/etc/nginx/conf.d
+    #         - ./wp_data:/var/www/html
+    #     depends_on:
+    #     - wordpress
 
-    redis:
-      container_name: ${COMPOSE_PROJECT_NAME}-redis
-      image: redis:${REDIS_VER}
-      restart: always
-      networks:
-        - wordpress
+    # redis:
+    #   container_name: ${COMPOSE_PROJECT_NAME}-redis
+    #   image: redis:${REDIS_VER}
+    #   restart: always
+    #   networks:
+    #     - wordpress
+# volumes:
+#   wp-content:
+
 networks:
-  default:
+  nginx-proxy-man:
     external: true
-    name: nginx-proxy-man
-  pma_net:
+    # name: nginx-proxy-man
+  # pma_net:
+  #   external: true
+  #   name: pma-external
+  # wordpress:
+  #   internal: true
+  redis-network:
     external: true
-    name: pma-external
-  wordpress:
-    internal: true
+  db-network:
+    external: true
+
   
