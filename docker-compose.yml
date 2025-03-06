@@ -14,7 +14,6 @@ services:
 #        - ./plugins:/var/www/html/wp-content/plugins
 #        - ./mu-plugins:/var/www/html/wp-content/mu-plugins
 #        - ./uploads:/var/www/html/wp-content/uploads
-        - ./logs:/var/www/html/wp-content/logs
 #        - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
         - ./error-logging.ini:/usr/local/etc/php/conf.d/error-logging.ini
 #        - ./object-cache.php:/var/www/html/wp-content/object-cache.php
