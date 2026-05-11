@@ -1,42 +1,40 @@
 services:
-    wordpress:
-      container_name: ${COMPOSE_PROJECT_NAME}-wp
-      image: wordpress:latest
-      # build: 
-      #   context: .
-      #   args:
-      #     PHP_VER: ${PHP_VER}
-      #     WP_TAG: ${WP_TAG}
-      volumes:
-        - ./wp-content:/var/www/html/wp-content
-        - ./custom-limits.ini:/usr/local/etc/php/conf.d/custom-limits.ini
-#        - ./themes:/var/www/html/wp-content/themes
-#        - ./plugins:/var/www/html/wp-content/plugins
-#        - ./mu-plugins:/var/www/html/wp-content/mu-plugins
-#        - ./uploads:/var/www/html/wp-content/uploads
-#        - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-        - ./error-logging.ini:/usr/local/etc/php/conf.d/error-logging.ini
-#        - ./object-cache.php:/var/www/html/wp-content/object-cache.php
-      networks:
-        - nginx-proxy-man
-        - redis-network
-        - db-network
-      restart: always
-      environment:
-        - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
-        - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-        - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
-        - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-        - WORDPRESS_CONFIG_EXTRA=${WORDPRESS_CONFIG_EXTRA}
-      mem_limit: ${MEM_LIMIT}
+  wordpress:
+    container_name: ${COMPOSE_PROJECT_NAME}-wp
 
+    build:
+      context: .
+      args:
+        PHP_VER: ${PHP_VER}
+        WP_TAG: ${WP_TAG}
+
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+      - ./custom-limits.ini:/usr/local/etc/php/conf.d/custom-limits.ini
+      - ./error-logging.ini:/usr/local/etc/php/conf.d/error-logging.ini
+
+    networks:
+      - nginx-proxy-man
+      - redis-network
+      - db-network
+
+    restart: always
+
+    environment:
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_CONFIG_EXTRA=${WORDPRESS_CONFIG_EXTRA}
+
+    mem_limit: ${MEM_LIMIT}
 
 networks:
   nginx-proxy-man:
     external: true
+
   redis-network:
     external: true
+
   db-network:
     external: true
-
-  
