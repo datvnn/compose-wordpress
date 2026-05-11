@@ -5,7 +5,6 @@ services:
     build:
       context: .
       args:
-        PHP_VER: ${PHP_VER}
         WP_TAG: ${WP_TAG}
 
     volumes:
